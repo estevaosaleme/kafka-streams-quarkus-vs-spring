@@ -1,0 +1,48 @@
+FROM debian:sid AS build
+
+RUN apt-get update && \
+    apt-get install -y \
+    wget \
+    curl \
+    unzip \
+    build-essential \
+    libz-dev \
+    zlib1g-dev
+
+RUN wget https://github.com/graalvm/graalvm-ce-builds/releases/download/jdk-21.0.2/graalvm-community-jdk-21.0.2_linux-x64_bin.tar.gz && \
+    tar -xvzf graalvm-community-jdk-21.0.2_linux-x64_bin.tar.gz && \
+    mv graalvm-community-openjdk-21.0.2+13.1 /opt/graalvm && \
+    ln -s /opt/graalvm/bin/* /usr/local/bin/ && \
+    rm graalvm-community-jdk-21.0.2_linux-x64_bin.tar.gz
+
+ENV JAVA_HOME=/opt/graalvm
+ENV PATH="${JAVA_HOME}/bin:${PATH}"
+
+ENV MAVEN_VERSION=3.9.9
+RUN wget https://archive.apache.org/dist/maven/maven-3/${MAVEN_VERSION}/binaries/apache-maven-${MAVEN_VERSION}-bin.tar.gz && \
+    tar -xvzf apache-maven-${MAVEN_VERSION}-bin.tar.gz && \
+    mv apache-maven-${MAVEN_VERSION} /opt/maven && \
+    ln -s /opt/maven/bin/mvn /usr/local/bin/mvn && \
+    rm apache-maven-${MAVEN_VERSION}-bin.tar.gz
+
+WORKDIR /app
+
+COPY springboot-iot-stateless/pom.xml .
+COPY springboot-iot-stateless/mvnw .
+COPY springboot-iot-stateless/.mvn ./.mvn
+COPY springboot-iot-stateless/src ./src
+
+RUN ./mvnw -Pnative native:compile
+
+FROM ghcr.io/graalvm/jdk-community:21
+
+WORKDIR /work/
+
+COPY --from=build /app/target/springboot-iot-stateless /work/application 
+RUN chown 1001 /work \
+    && chmod "g+rwX" /work \
+    && chown 1001:root /work
+
+USER 1001
+
+ENTRYPOINT ["./application"]

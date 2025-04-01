@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: springboot-iot-stateless
+  labels:
+    app: springboot-iot-stateless
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: springboot-iot-stateless
+  template:
+    metadata:
+      labels:
+        app: springboot-iot-stateless
+    spec:
+      containers:
+        - name: springboot-iot-stateless
+          image: springboot-iot-stateless:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 9404
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "1"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: springboot-iot-stateless
+spec:
+  selector:
+    app: springboot-iot-stateless
+  ports:
+    - protocol: TCP
+      port: 9404
+      targetPort: 9404
+  type: ClusterIP 

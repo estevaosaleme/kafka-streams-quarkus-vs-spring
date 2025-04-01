@@ -1,0 +1,22 @@
+FROM quay.io/quarkus/ubi-quarkus-mandrel-builder-image:jdk-21 AS build
+WORKDIR /app
+
+COPY quarkus-iot-stateless/pom.xml .
+COPY quarkus-iot-stateless/mvnw .
+COPY quarkus-iot-stateless/.mvn ./.mvn
+COPY quarkus-iot-stateless/src ./src
+
+RUN ./mvnw package -Dnative
+
+FROM ghcr.io/graalvm/jdk-community:21
+
+WORKDIR /work/
+
+COPY --from=build /app/target/*-runner /work/application 
+RUN chown 1001 /work \
+    && chmod "g+rwX" /work \
+    && chown 1001:root /work
+
+USER 1001
+
+ENTRYPOINT ["./application"]
