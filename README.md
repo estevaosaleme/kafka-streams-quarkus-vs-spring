@@ -1,6 +1,6 @@
 # Kafka Streams Quarkus vs Springboot Resource Utilization
 
-This repo contains artifacts to run and compare resource utilization of Quarkus vs Springboot with Kafka Streams. To avoid external influences, it's built on top of Minikube to run in an isolated environment.
+This repo contains artifacts to run and compare resource utilization of Quarkus vs Springboot with Kafka Streams. To avoid external influences (lurking variables), it's built on top of Minikube to run in an isolated environment.
 
 
 ## Pre-requisites
