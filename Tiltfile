@@ -34,10 +34,10 @@ local_resource("100.Msgs_10.PerSec", cmd=PUBLISH_KAFKA_MESSAGES_100M_10S, auto_i
 PUBLISH_KAFKA_MESSAGES_10000M_100S = "kubectl exec -it deploy/kafka-kraft -- bash /app/tilt-artifacts/scripts/temperature-load.sh 10000 100"
 local_resource("10K.Msgs_100.PerSec", cmd=PUBLISH_KAFKA_MESSAGES_10000M_100S, auto_init = False, labels="003-load")
 
-PUBLISH_KAFKA_MESSAGES_10000M_100S = "kubectl exec -it deploy/kafka-kraft -- bash /app/tilt-artifacts/scripts/temperature-load.sh 100000 100"
+PUBLISH_KAFKA_MESSAGES_100000M_100S = "kubectl exec -it deploy/kafka-kraft -- bash /app/tilt-artifacts/scripts/temperature-load.sh 100000 100"
 local_resource("100K.Msgs_100.PerSec", cmd=PUBLISH_KAFKA_MESSAGES_10000M_100S, auto_init = False, labels="003-load")
 
-PUBLISH_KAFKA_MESSAGES_10000M_100S = "kubectl exec -it deploy/kafka-kraft -- bash /app/tilt-artifacts/scripts/temperature-load.sh 10000000 100"
+PUBLISH_KAFKA_MESSAGES_1000000M_100S = "kubectl exec -it deploy/kafka-kraft -- bash /app/tilt-artifacts/scripts/temperature-load.sh 10000000 100"
 local_resource("1M.Msgs_100.PerSec", cmd=PUBLISH_KAFKA_MESSAGES_10000M_100S, auto_init = False, labels="003-load")
 
 
@@ -65,11 +65,3 @@ k8s_resource('quarkus-iot-stateless-native', auto_init = False, labels=["004-app
 
 k8s_yaml('./tilt-artifacts/k8s/quarkus-iot-stateful-native.yaml')
 k8s_resource('quarkus-iot-stateful-native', auto_init = False, labels=["004-apps-pods-native"],)
-
-
-# TO-DO:
-# - create a stateful app with endpoint rest that change a kafka streams rule on-the-fly (post method) 
-# and a get method to check whether this feature is enabled.
-#   - the application deserializes data in json and serializes them in Avro when publishing
-#   - this application must have log enabled
-#   - this application must serialize messages with avro serialization
