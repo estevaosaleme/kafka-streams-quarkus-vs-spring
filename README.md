@@ -8,7 +8,6 @@ This repo contains artifacts to run and compare resource utilization of Quarkus 
 The following programs are used to back up the infrastructure needed to run the comparison.
 
 - [Docker](https://www.docker.com/) (version 27.5.1, build 9f9e405)
-- [Docker Compose](https://github.com/docker/compose/releases) (version v2.32.4)
 - [Minikube](https://minikube.sigs.k8s.io/docs/) (v1.32.0)
 - [Helm](https://helm.sh/) (Version:"v3.14.3")
 - [Kubectl](https://kubernetes.io/docs/tasks/tools/) (Client Version: v1.29.2)
