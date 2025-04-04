@@ -1,4 +1,4 @@
-# Kafka Streams Quarkus vs Springboot Resource Utilization
+# Kafka Streams Quarkus vs Springboot Resource Utilization Benchmarking Toolset
 
 This repo contains artifacts to run and compare resource utilization of Quarkus vs Springboot with Kafka Streams. To avoid external influences (lurking variables), it's built on top of Minikube to run in an isolated environment.
 
@@ -17,8 +17,6 @@ You may use different versions of these programs and still run the infrastructur
 
 ## Launch Minikube
 
-Before making progress with the apps running, you need to run the infrastructure and build the container images that will be used.
-
 1) Run Minikube:
    
 ```shell
@@ -31,7 +29,7 @@ minikube start --driver=docker
 minikube mount $(pwd):/kafka-streams-quarkus-vs-spring
 ```
 
-## Set up Prometheus for Node Level Metrics
+## Set up Prometheus for node level metrics
 
 1) Add the following repository to helm:
 
@@ -51,7 +49,7 @@ helm install prometheus prometheus-community/prometheus
 kubectl expose service prometheus-server --type=NodePort --target-port=9090 --name=prometheus-server-np
 ```
 
-## Getting Started
+## Build container images
 
 1) In the *kafka-streams-quarkus-vs-spring* folder, build the container images into Minikube:
 
