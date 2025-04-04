@@ -15,6 +15,21 @@ The following programs are used to back up the infrastructure needed to run the 
 
 You may use different versions of these programs and still run the infrastructure without any problem. However, I do not recommend using lower versions than that of the aforementioned ones.
 
+## Launch Minikube
+
+Before making progress with the apps running, you need to run the infrastructure and build the container images that will be used.
+
+1) Run Minikube:
+   
+```shell
+minikube start --driver=docker
+```
+
+2) In the *kafka-streams-quarkus-vs-spring* folder, run Minikube mount:
+
+```shell
+minikube mount $(pwd):/kafka-streams-quarkus-vs-spring
+```
 
 ## Set up Prometheus for Node Level Metrics
 
@@ -38,21 +53,7 @@ kubectl expose service prometheus-server --type=NodePort --target-port=9090 --na
 
 ## Getting Started
 
-Before making progress with the apps running, you need to run the infrastructure and build the container images that will be used.
-
-1) Run Minikube:
-   
-```shell
-minikube start --driver=docker
-```
-
-2) In the *kafka-streams-quarkus-vs-spring* folder, run Minikube mount:
-
-```shell
-minikube mount $(pwd):/kafka-streams-quarkus-vs-spring
-```
-
-3) In the *kafka-streams-quarkus-vs-spring* folder, build the container images into Minikube:
+1) In the *kafka-streams-quarkus-vs-spring* folder, build the container images into Minikube:
 
 **JVM images**
 
@@ -98,7 +99,7 @@ docker image save -o quarkus-iot-stateful-native.tar quarkus-iot-stateful-native
 minikube image load quarkus-iot-stateful-native.tar
 ```
 
-4) Then, run Tilt from the *kafka-streams-quarkus-vs-spring* folder:
+2) Then, run Tilt from the *kafka-streams-quarkus-vs-spring* folder:
 
 ```shell
 tilt up
